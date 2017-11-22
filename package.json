@@ -1,0 +1,21 @@
+{
+  "name": "aws-s3-synch",
+  "version": "0.0.0",
+  "description": "Provides utilities to synch local file structure to AWS S3 and vice versa. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "aws",
+    "s3",
+    "synch",
+    "bucket",
+    "node"
+  ],
+  "author": "Hassan Tariq",
+  "license": "MIT",
+  "dependencies": {
+    "joi": "^13.0.2"
+  }
+}
