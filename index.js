@@ -6,7 +6,7 @@ var awsSynch = require("./aws-s3-synch");
 var params = {
 
 	// [required] Source directory or file path on AWS
-	source: `s3://fizz-web-archives/fizz-docs/client_api_reference/`,
+	source: `s3://my-test-bucket/folder1/folder2/`,
 
 	// [required] Destination directory path on target machine.
 	destination: path.join(__dirname, "test"),
