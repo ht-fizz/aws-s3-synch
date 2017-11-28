@@ -1,6 +1,6 @@
 ## Intro
-* The aws-s3-synch is a nodejs wrapper which is great for Synching local folder to s3 bucket folder. 
-* Major use cases include automation of deploying static websites or uploading local folder(s) to Amazon s3.
+* The aws-s3-synch is a nodejs wrapper which is great for synching local folder/files to s3 bucket folder and vice versa.
+* Major use cases include automation of deployment of static websites or uploading local folder(s) to Amazon s3. 
 * Facilitates simulation of actions (without actually performing) by tweaking certain parameters.
 
 
@@ -11,28 +11,57 @@
 
 ## Usage
 
+**synchToS3**
 ```js
-//include library
+//include respective libraries
 var awsSynch = require("aws-s3-synch");
 var path = require("path");
 
 awsSynch.synchToS3({
-	//source directory path
-	source: path.join(__dirname, process.env.SOURCE),  
+	// [Required] source directory path
+	source: path.join(__dirname),  // --> this one will synch from current working directory
 
-	//Destination path including both bucket and folder information
+	// [Required] Destination path including both bucket and folder information
 	destination: "s3://<BUCKET_NAME>/folder1/folder2/",   				 
 
-	//true means simulate, false means perform respective action in bucket
+	// [Required] true means simulate, false means perform respective action in bucket
 	test: true,																				 
 
-	//delete destination objects with no corresponding file.	
+	// [Required] delete destination objects with no corresponding file.	
 	deleteRemoved: true,															 
 
-	//files.exclude will contain files that are not supposed to be synched.	
+	// [Required] files.exclude will contain files that are not supposed to be synched.	
 	excludeFile: path.join(__dirname, "files.exclude") 
 
 });
+
+```
+
+**synchFromS3**
+```js
+
+awsSynch.synchFromS3({
+
+	// [Required] Source directory or file path on AWS
+	source: `s3://<BUCKET_NAME>/<FULL_PATH_TO_FOLDER_OR_OBJECT>`,
+
+	// [Required] Destination directory path on target machine.
+	destination: path.join(__dirname), // this one will synch in current working directory
+
+	// [Required] Skip if respective file already exists in destination directory
+	skipExisting: true,
+
+	// [Required] For an operation, it takes precedence on skipExisting
+	force: false,
+
+	// [Required] true means simulate, false means perform respective action in bucket
+	test: false,
+
+
+	// [Optional, Default: false] if download fails due to slow internet or somehow, use continue: true to resume
+	continue: false
+});
+
 
 ```
 

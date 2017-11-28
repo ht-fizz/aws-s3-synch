@@ -47,6 +47,33 @@ function synchToS3(params) {
 }
 
 
+function synchFromS3(params) {
+
+	var force = params.force ? "--force": "";
+	var skipExisting = params.skipExisting ? "--skip-existing" : "";
+	var dryRun = params.test ? "--dry-run" : "";
+	var Continue   = params.continue ? "--continue" : "";
+
+	var syncCommand = `s3cmd ${force} ${skipExisting} ${dryRun} ${Continue} --recursive get ${params.source} ${params.destination}`;
+
+	console.log("syncCommand : ", syncCommand);
+	console.log("\n");
+
+	console.log("--> Syncing From S3\n");
+	try {
+		execute(syncCommand);		
+	} catch (e) {
+		// console.log("Error In Syncing Removed Files from : ", destination);
+		console.log("Error Command : ", syncCommand);
+		console.log("Errors : ", JSON.stringify(e));
+		return e;
+	} 
+
+	console.log("\n====== Successfully synched [", params.destination, "] ======\n");
+
+}
+
+
 module.exports = {
 
 	synchToS3(params) {
@@ -60,6 +87,18 @@ module.exports = {
 			synchToS3(params);
 
 		});
-	}
+	},
+	synchFromS3(params) {
+		console.log("Params => ", params);
+
+		Joi.validate(params, schemas.synchFromS3, (err, details) => {
+			if (err) return console.log("Error===> ", (JSON.stringify(err))) ;
+
+			console.log(params);
+
+			synchFromS3(params);
+
+		});
+	},
 
 }
