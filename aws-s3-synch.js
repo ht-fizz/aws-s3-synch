@@ -37,12 +37,12 @@ function synchToS3(params, cb) {
 	try {
 		execute(syncCommand);
 		console.log("\n====== Successfully synched to [", destination, "] ======\n");
-		cb();
+		if (cb && typeof cb === "function") return cb();
 	} catch (e) {
 		console.log("Error In Syncing Removed Files from : ", destination);
 		console.log("Error Command : ", syncCommand);
 		console.log("Errors : ", JSON.stringify(e));
-		cb(e);
+		if (cb && typeof cb === "function") return cb();
 	} 
 
 }
@@ -64,12 +64,12 @@ function synchFromS3(params, cb) {
 	try {
 		execute(syncCommand);
 		console.log("\n====== Successfully synched [", params.destination, "] ======\n");
-		cb();
+		if (cb && typeof cb === "function") return cb();
 	} catch (e) {
 		// console.log("Error In Syncing Removed Files from : ", destination);
 		console.log("Error Command : ", syncCommand);
 		console.log("Errors : ", JSON.stringify(e));
-		cb(e);
+		if (cb && typeof cb === "function") return cb(e);
 	} 
 
 
@@ -84,7 +84,7 @@ module.exports = {
 		Joi.validate(params, schemas.synchToS3, (err, details) => {
 			if (err) {
 				// console.log("Error===> ", (JSON.stringify(err))) ;
-				return cb(err);
+				if (cb && typeof cb === "function") return cb(err);
 			}
 
 			// console.log(params);
@@ -98,7 +98,7 @@ module.exports = {
 		Joi.validate(params, schemas.synchFromS3, (err, details) => {
 			if (err) {
 				// console.log("Error===> ", (JSON.stringify(err))) ;
-				return cb(err);
+				if (cb && typeof cb === "function") return cb(err);
 			}
 
 			console.log(params);
