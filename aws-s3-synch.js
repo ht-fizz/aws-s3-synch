@@ -11,7 +11,7 @@ function execute ( command, cwd, out ) {
 		exec(command, {stdio: 'inherit'})	
 }
 
-function synchToS3(params) {
+function synchToS3(params, cb) {
 
 	var {source, destination, test, deleteRemoved} = params;
 	var syncCommand = "s3cmd sync -r --no-mime-magic --guess-mime-type";
@@ -35,19 +35,20 @@ function synchToS3(params) {
 
 	console.log("--> Syncing on S3\n");
 	try {
-		execute(syncCommand);		
+		execute(syncCommand);
+		console.log("\n====== Successfully synched to [", destination, "] ======\n");
+		cb();
 	} catch (e) {
 		console.log("Error In Syncing Removed Files from : ", destination);
 		console.log("Error Command : ", syncCommand);
 		console.log("Errors : ", JSON.stringify(e));
-		return e;
+		cb(e);
 	} 
 
-	console.log("\n====== Successfully deployed to [", destination, "] ======\n");
 }
 
 
-function synchFromS3(params) {
+function synchFromS3(params, cb) {
 
 	var force = params.force ? "--force": "";
 	var skipExisting = params.skipExisting ? "--skip-existing" : "";
@@ -61,42 +62,47 @@ function synchFromS3(params) {
 
 	console.log("--> Syncing From S3\n");
 	try {
-		execute(syncCommand);		
+		execute(syncCommand);
+		console.log("\n====== Successfully synched [", params.destination, "] ======\n");
+		cb();
 	} catch (e) {
 		// console.log("Error In Syncing Removed Files from : ", destination);
 		console.log("Error Command : ", syncCommand);
 		console.log("Errors : ", JSON.stringify(e));
-		return e;
+		cb(e);
 	} 
 
-	console.log("\n====== Successfully synched [", params.destination, "] ======\n");
 
 }
 
 
 module.exports = {
 
-	synchToS3(params) {
-		console.log("Params => ", params);
+	synchToS3(params, cb) {
+		// console.log("Params => ", params);
 
 		Joi.validate(params, schemas.synchToS3, (err, details) => {
-			if (err) return console.log("Error===> ", (JSON.stringify(err))) ;
+			if (err) {
+				// console.log("Error===> ", (JSON.stringify(err))) ;
+				return cb(err);
+			}
 
-			console.log(params);
-
-			synchToS3(params);
+			// console.log(params);
+			synchToS3(params, cb);
 
 		});
 	},
-	synchFromS3(params) {
-		console.log("Params => ", params);
+	synchFromS3(params, cb) {
+		// console.log("Params => ", params);
 
 		Joi.validate(params, schemas.synchFromS3, (err, details) => {
-			if (err) return console.log("Error===> ", (JSON.stringify(err))) ;
+			if (err) {
+				// console.log("Error===> ", (JSON.stringify(err))) ;
+				return cb(err);
+			}
 
 			console.log(params);
-
-			synchFromS3(params);
+			synchFromS3(params, cb);
 
 		});
 	},

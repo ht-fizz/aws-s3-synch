@@ -4,7 +4,7 @@
   "description": "Provides utilities to synch local file structure to AWS S3 and vice versa. ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "aws",
@@ -17,5 +17,11 @@
   "license": "MIT",
   "dependencies": {
     "joi": "^13.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "dotenv": "^4.0.0",
+    "lodash": "^4.17.4",
+    "mocha": "^4.0.1"
   }
 }
