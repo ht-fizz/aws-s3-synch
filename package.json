@@ -1,6 +1,6 @@
 {
   "name": "aws-s3-synch",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Provides utilities to synch local file structure to AWS S3 and vice versa. ",
   "main": "index.js",
   "scripts": {
