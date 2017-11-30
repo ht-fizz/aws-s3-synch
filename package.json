@@ -6,6 +6,11 @@
   "scripts": {
     "test": "mocha"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hassantariq-carameltech/aws-s3-synch"
+  },
+  "homepage": "https://github.com/hassantariq-carameltech/aws-s3-synch",
   "keywords": [
     "aws",
     "s3",
