@@ -6,7 +6,7 @@
 
 
 ## Installation
-* [Install and configure s3cmd](http://s3tools.org)
+* [Install and configure s3cmd](http://s3tools.org) or brew install s3cmd
 * `npm install aws-s3-synch`
 
 ## Usage
@@ -32,6 +32,12 @@ awsSynch.synchToS3({
 
 	// [Required] files.exclude will contain files that are not supposed to be synched.	
 	excludeFile: path.join(__dirname, "files.exclude") 
+
+	//[optional pair] specify the amazon access key and secret
+	//If sent as env variable, then these will be overriden
+	//if neiher sent as env varibale nor specified in params then will read from default .s3cfg file
+	AWS_ACCESS_KEY_ID: "AWS_ACCESS_KEY_ID",
+	AWS_SECRET_ACCESS_KEY: "AWS_SECRET_ACCESS_KEY"
 
 });
 
@@ -60,6 +66,12 @@ awsSynch.synchFromS3({
 
 	// [Optional, Default: false] if download fails due to slow internet or somehow, use continue: true to resume
 	continue: false
+
+	//[optional pair] specify the amazon access key and secret
+	//If sent as env variable, then these will be overriden
+	//if neiher sent as env varibale nor specified in params then will read from default .s3cfg file
+	AWS_ACCESS_KEY_ID: "AWS_ACCESS_KEY_ID",
+	AWS_SECRET_ACCESS_KEY: "AWS_SECRET_ACCESS_KEY"
 });
 
 

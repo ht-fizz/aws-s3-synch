@@ -16,6 +16,9 @@ function synchToS3(params, cb) {
 	var {source, destination, test, deleteRemoved} = params;
 	var syncCommand = "s3cmd sync -r --no-mime-magic --guess-mime-type";
 
+	const accessKey = process.env.AWS_ACCESS_KEY_ID || params.AWS_ACCESS_KEY_ID;
+	const secretKey = process.env.AWS_SECRET_ACCESS_KEY || params.AWS_SECRET_ACCESS_KEY;
+
 	if (params.deleteRemoved) {
 		syncCommand += " --delete-removed";
 	}
@@ -29,6 +32,9 @@ function synchToS3(params, cb) {
 	}
 
 	syncCommand += " " + source + " " + destination;
+
+	if (accessKey && secretKey)
+		syncCommand = syncCommand + ` --access_key=${accessKey} --secret_key=${secretKey}`;
 
 	console.log("syncCommand : ", syncCommand);
 	console.log("\n");
@@ -57,6 +63,12 @@ function synchFromS3(params, cb) {
 
 	var syncCommand = `s3cmd ${force} ${skipExisting} ${dryRun} ${Continue} --recursive get ${params.source} ${params.destination}`;
 
+	const accessKey = process.env.AWS_ACCESS_KEY_ID || params.AWS_ACCESS_KEY_ID;
+	const secretKey = process.env.AWS_SECRET_ACCESS_KEY || params.AWS_SECRET_ACCESS_KEY;
+	
+	if (accessKey && secretKey)
+		syncCommand = syncCommand + ` --access_key=${accessKey} --secret_key=${secretKey}`;
+	
 	console.log("syncCommand : ", syncCommand);
 	console.log("\n");
 
